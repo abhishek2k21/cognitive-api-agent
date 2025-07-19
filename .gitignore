@@ -1,0 +1,12 @@
+# Python virtual environment
+crud-ai/
+
+# Environment variables - Contains secrets!
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Log files
+*.log

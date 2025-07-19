@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognitive API Agent - The Definitive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent-primary: #c778dd;
+            --accent-secondary: #d2a8ff;
+            --accent-hover: #8b5cf6;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .nav-link {
+            transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+        .section-title {
+            color: var(--accent-secondary);
+        }
+        .card {
+            background-color: var(--bg-secondary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(199, 120, 221, 0.1);
+            border-color: var(--accent-hover);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, var(--accent-secondary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .step-card {
+            background-color: var(--bg-secondary);
+            border-left: 4px solid var(--accent-primary);
+        }
+        .step-number {
+            background-color: rgba(199, 120, 221, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(199, 120, 221, 0.3);
+        }
+        .copy-btn {
+            position: absolute; top: 0.75rem; right: 0.75rem; background-color: #30363d; color: #c9d1d9;
+            padding: 0.25rem 0.5rem; border-radius: 5px; font-size: 0.75rem; opacity: 0; transition: opacity 0.2s ease;
+        }
+        pre:hover .copy-btn { opacity: 1; }
+        .fade-in-section {
+            opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
+        .tab-button.active { border-bottom: 2px solid var(--accent-primary); color: var(--accent-secondary); font-weight: 600; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#0d1117]/80 backdrop-blur-sm sticky top-0 z-50 border-b border-[#30363d]">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+            <div class="text-xl font-bold gradient-text">Cognitive API Agent</div>
+            <div id="main-nav" class="hidden md:flex items-center space-x-6">
+                <a href="#overview" class="nav-link font-medium text-[#8b949e]">Overview</a>
+                <a href="#setup" class="nav-link font-medium text-[#8b949e]">Setup Guide</a>
+                <a href="#workflow" class="nav-link font-medium text-[#8b949e]">Workflow</a>
+                <a href="#agent" class="nav-link font-medium text-[#8b949e]">The AI Brain</a>
+                <a href="#code" class="nav-link font-medium text-[#8b949e]">Code Details</a>
+                <a href="#evolution" class="nav-link font-medium text-[#8b949e]">Evolution</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="bg-[#161b22] border border-[#30363d] text-white rounded-md p-2 focus:ring-2 focus:ring-[#c778dd]">
+                    <option value="overview">Overview</option>
+                    <option value="setup">Setup Guide</option>
+                    <option value="workflow">Workflow</option>
+                    <option value="agent">The AI Brain</option>
+                    <option value="code">Code Details</option>
+                    <option value="evolution">Evolution</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="space-y-28">
+            
+            <section id="overview" class="scroll-mt-20 text-center fade-in-section">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 gradient-text">Cognitive API Agent</h1>
+                <p class="text-lg text-[#8b949e] max-w-3xl mx-auto mb-12">A sophisticated AI-powered application that serves as a natural language interface for any modern web API. It reasons, clarifies, and executes commands, turning complex technical interactions into simple conversations.</p>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold text-[#d2a8ff] mb-4">How It Works in 30 Seconds</h3>
+                    <div class="flex flex-col md:flex-row text-left items-center justify-around gap-8">
+                        <div class="text-center"><i class="fa-solid fa-link text-4xl text-sky-400 mb-2"></i><p>1. Provide an API URL. The agent reads its documentation instantly.</p></div>
+                        <div class="text-center"><i class="fa-solid fa-comments text-4xl text-emerald-400 mb-2"></i><p>2. Chat Your Command in plain English (e.g., "Create a new user named Virat").</p></div>
+                        <div class="text-center"><i class="fa-solid fa-lightbulb text-4xl text-amber-400 mb-2"></i><p>3. The Agent Thinks, asks for missing details, and shows its plan for you to approve.</p></div>
+                        <div class="text-center"><i class="fa-solid fa-circle-check text-4xl text-rose-400 mb-2"></i><p>4. Confirm & Execute. With your approval, the agent performs the action.</p></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="setup" class="scroll-mt-20 fade-in-section">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-12 text-center">Setup Guide: From Zero to Running</h2>
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <div class="step-card p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="step-number h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg mr-4 flex-shrink-0">1</div>
+                            <div>
+                                <h3 class="font-bold text-xl text-white">Prerequisites</h3>
+                                <p class="text-[#8b949e]">Ensure you have Python (3.8+) and a virtual environment tool (like `venv`) installed on your system.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-card p-6">
+                         <div class="flex items-center mb-4"><div class="step-number h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg mr-4 flex-shrink-0">2</div><div><h3 class="font-bold text-xl text-white">Create Project Structure</h3><p class="text-[#8b949e]">Organize your project folder as shown. This separation of concerns is key to a maintainable application.</p></div></div>
+                        <div class="relative mt-2"><pre class="bg-[#0d1117] text-sm p-4 rounded-md border border-[#30363d]"><button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i></button><code>/YourProject/
+├── app.py
+├── .env
+├── requirements.txt
+└── /src
+    ├── __init__.py
+    ├── api_client.py
+    ├── llm_agent.py
+    └── tools.py</code></pre></div>
+                    </div>
+                    <div class="step-card p-6">
+                         <div class="flex items-center mb-4"><div class="step-number h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg mr-4 flex-shrink-0">3</div><div><h3 class="font-bold text-xl text-white">Install Dependencies</h3><p class="text-[#8b949e]">Create `requirements.txt` with the content below, then run the installation command from your terminal.</p></div></div>
+                        <div class="relative mt-2"><pre class="bg-[#0d1117] text-sm p-4 rounded-md border border-[#30363d]"><button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i></button><code>streamlit
+pydantic
+pydantic-ai
+python-dotenv
+httpx
+pandas
+openai</code></pre></div>
+                        <div class="relative mt-4"><pre class="bg-[#0d1117] text-sm p-4 rounded-md border border-[#30363d]"><button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i></button><code>pip install -r requirements.txt</code></pre></div>
+                    </div>
+                    <div class="step-card p-6">
+                         <div class="flex items-center mb-4"><div class="step-number h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg mr-4 flex-shrink-0">4</div><div><h3 class="font-bold text-xl text-white">Set Your API Key</h3><p class="text-[#8b949e]">Create a `.env` file in the root folder and add your secret OpenAI API key. This keeps your key secure and out of the code.</p></div></div>
+                        <div class="relative mt-2"><pre class="bg-[#0d1117] text-sm p-4 rounded-md border border-[#30363d]"><button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i></button><code>OPENAI_API_KEY="sk-YourSecretKeyGoesHere"</code></pre></div>
+                    </div>
+                     <div class="step-card p-6">
+                         <div class="flex items-center mb-4"><div class="step-number h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg mr-4 flex-shrink-0">5</div><div><h3 class="font-bold text-xl text-white">Populate the Code</h3><p class="text-[#8b949e]">Copy the code from the "Code Details" section below into their respective files (`app.py`, `src/api_client.py`, etc.).</p></div></div>
+                    </div>
+                    <div class="step-card p-6">
+                         <div class="flex items-center mb-4"><div class="step-number h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg mr-4 flex-shrink-0">6</div><div><h3 class="font-bold text-xl text-white">Launch the Agent</h3><p class="text-[#8b949e]">Run the application from your terminal. Your browser should open with the chat interface, ready for your commands.</p></div></div>
+                        <div class="relative mt-2"><pre class="bg-[#0d1117] text-sm p-4 rounded-md border border-[#30363d]"><button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i></button><code>streamlit run app.py</code></pre></div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="workflow" class="scroll-mt-20 fade-in-section">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-8 text-center">System Architecture & Workflow</h2>
+                <p class="text-center text-[#8b949e] max-w-2xl mx-auto mb-10">The application follows a robust, decision-driven workflow. Click each step to see how a user's request is intelligently processed.</p>
+                <div id="workflow-diagram" class="flex flex-col md:flex-row items-stretch justify-center gap-4 md:gap-2 flex-wrap">
+                </div>
+                <div id="workflow-explanation" class="mt-10 p-6 bg-[#161b22] rounded-lg border border-[#30363d] text-[#d2a8ff] transition-all duration-300 opacity-0 h-0 overflow-hidden">
+                    <h3 class="font-bold text-xl mb-2"></h3>
+                    <p class="text-[#c9d1d9]"></p>
+                </div>
+            </section>
+
+            <section id="agent" class="scroll-mt-20 fade-in-section">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-8 text-center">The Cognitive Agent's Brain</h2>
+                <div class="card p-8 grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                    <div class="lg:col-span-3">
+                        <p class="text-lg mb-4 text-[#c9d1d9]">The agent's intelligence is defined by a powerful **System Prompt** that forces it to make a logical choice. It doesn't just respond; it decides on a structured action.</p>
+                        <div class="bg-[#0d1117] p-4 rounded-lg border border-[#30363d] mb-6">
+                            <h4 class="font-semibold text-lg mb-2 text-[#d2a8ff]">Core Instruction</h4>
+                            <p class="italic text-[#8b949e]">"If the request is INCOMPLETE, you MUST respond with a `Question` object. If the request is COMPLETE, you MUST respond with an `APIRequest` object. Never make up data."</p>
+                        </div>
+                        <p class="text-lg text-[#c9d1d9]">This mandatory choice between asking for more information or formulating a complete API call is the key to the agent's reliability and intelligence.</p>
+                    </div>
+                    <div class="lg:col-span-2 chart-container">
+                        <canvas id="agentChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="code" class="scroll-mt-20 fade-in-section">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-8 text-center">Code Details</h2>
+                <div class="card p-6 sm:p-8">
+                    <div class="border-b border-[#30363d]">
+                        <nav id="code-tabs" class="flex flex-wrap -mb-px space-x-6" aria-label="Tabs">
+                        </nav>
+                    </div>
+                    <div id="code-content" class="mt-6">
+                    </div>
+                </div>
+            </section>
+
+            <section id="evolution" class="scroll-mt-20 fade-in-section">
+                <h2 class="section-title text-3xl md:text-4xl font-bold mb-8 text-center">Project Evolution & Lessons Learned</h2>
+                <div id="troubleshooting-accordion" class="space-y-3 max-w-4xl mx-auto">
+                </div>
+            </section>
+        </div>
+    </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const workflowData = [
+        { name: 'User Input', desc: 'The user provides an API URL to initialize the agent, then types a command in plain English, like "register a new customer named Priya".', icon: 'fa-solid fa-keyboard' },
+        { name: 'Agent Analysis', desc: 'The agent receives the user\'s request, the recent chat history, and the entire API specification. It analyzes all this context against its core instructions.', icon: 'fa-solid fa-magnifying-glass-chart' },
+        { name: 'Cognitive Decision', desc: 'The agent makes a mandatory choice: Is all information present? If yes, it formulates a complete `APIRequest`. If no, it formulates a `Question` to ask for the missing details.', icon: 'fa-solid fa-lightbulb' },
+        { name: 'User Interaction', desc: 'The agent\'s decision is presented to the user. This is either the clarifying question it generated, or a confirmation dialog showing the `APIRequest` it plans to execute.', icon: 'fa-solid fa-comments' },
+        { name: 'Execution & Response', desc: 'After the user provides the missing info or confirms the request, the `api_client` executes the call. The final result (success or failure) is displayed in the chat.', icon: 'fa-solid fa-circle-check' },
+    ];
+    const codeData = {
+        'app.py': {
+            lang: 'python',
+            code: `import streamlit as st
+from src.api_client import ApiClient
+from src.llm_agent import get_cognitive_agent
+from src.tools import APIRequest, Question
+# ... (UI setup and helper functions)
+
+# Main application logic
+if prompt := st.chat_input("Enter a URL or command..."):
+    add_message("user", prompt)
+    
+    # Logic to initialize API client from URL
+    # ...
+    
+    else: # If it's a command
+        with st.spinner("Agent is thinking..."):
+            chat_history = json.dumps(st.session_state.messages[-5:])
+            agent = get_cognitive_agent(st.session_state.api_spec, chat_history)
+            
+            # The agent makes its decision
+            decision = asyncio.run(agent.run(prompt))
+            
+            if isinstance(decision.data, Question):
+                # The agent decided to ask for more info
+                add_message("assistant", decision.data.question_to_user)
+            
+            elif isinstance(decision.data, APIRequest):
+                # The agent has enough info and wants to act
+                st.session_state.pending_api_request = decision.data
+    
+    st.rerun()`
+        },
+        'llm_agent.py': {
+            lang: 'python',
+            code: `from pydantic_ai import Agent
+from pydantic_ai.models.openai import OpenAIModel
+from src.tools import AgentDecision
+import json
+
+def get_cognitive_agent(api_spec: str, chat_history: str):
+    """Initializes the agent with context."""
+    
+    system_prompt = """
+    You are an expert AI assistant that translates user requests into structured actions.
+    - If the request is INCOMPLETE based on the API spec, you MUST respond with a 'Question' object.
+    - If the request is COMPLETE, you MUST respond with an 'APIRequest' object.
+    Never make up data.
+    
+    --- RECENT CHAT HISTORY ---
+    {chat_history}
+    
+    --- API SPECIFICATION ---
+    {api_spec}
+    """
+    
+    return Agent(
+        model=OpenAIModel('gpt-4o'),
+        system_prompt=system_prompt.format(
+            chat_history=chat_history, 
+            api_spec=api_spec
+        ),
+        result_type=AgentDecision
+    )`
+        },
+        'tools.py': {
+            lang: 'python',
+            code: `from pydantic import BaseModel, Field
+from typing import Dict, Any, Optional, Literal, Union
+
+class APIRequest(BaseModel):
+    """A structured plan to call a specific API endpoint."""
+    endpoint: str = Field(...)
+    method: Literal["GET", "POST", "PUT", "DELETE"]
+    json_payload: Optional[Dict[str, Any]] = None
+    params: Optional[Dict[str, Any]] = None
+
+class Question(BaseModel):
+    """A structured plan to ask the user a clarifying question."""
+    question_to_user: str = Field(...)
+
+# This Union type forces the AI's output to be one of the two structures above.
+AgentDecision = Union[APIRequest, Question]`
+        },
+        'api_client.py': {
+            lang: 'python',
+            code: `import httpx
+
+class ApiClient:
+    def __init__(self, base_url: str):
+        self.base_url = base_url.rstrip('/')
+
+    async def get_api_spec(self) -> Optional[Dict[str, Any]]:
+        """Tries to fetch OpenAPI spec from common endpoints."""
+        spec_paths = ["/v3/api-docs", "/openapi.json", "/swagger.json"]
+        # ... (Loop and request logic)
+
+    async def make_request(self, method, endpoint, json_payload=None, params=None):
+        """Executes the actual HTTP request and handles all responses and errors."""
+        async with httpx.AsyncClient() as client:
+            # ... (Try/except block for making requests and handling errors)
+`
+        }
+    };
+    const troubleshootingData = [
+        { title: 'Lesson 1: Unstructured AI is Unreliable', solution: 'The initial agent would often "hallucinate" or send incomplete API calls. The fix was to enforce a strict output structure using Pydantic (`Union[APIRequest, Question]`). This transformed the agent from a conversationalist into a reliable decision engine.' },
+        { title: 'Lesson 2: Context is King', solution: 'The agent initially lacked memory. By feeding it the recent chat history and the full API specification in every call, its ability to make informed, context-aware decisions improved dramatically.' },
+        { title: 'Lesson 3: The System Prompt is Your Control Panel', solution: 'Fine-tuning the agent\'s system prompt was the most impactful change. Making the instructions direct, clear, and non-negotiable (e.g., "You MUST respond with...") was key to achieving the desired behavior.' },
+        { title: 'Lesson 4: Expect and Handle Errors Gracefully', solution: 'The code evolved to be more resilient. The `api_client` can now handle non-JSON responses, and the main `app.py` has robust error handling to prevent the entire application from crashing on an unexpected AI output or API error.' },
+    ];
+
+    // --- DYNAMIC CONTENT INJECTION ---
+    const workflowDiagram = document.getElementById('workflow-diagram');
+    const workflowExplanation = document.getElementById('workflow-explanation');
+    workflowData.forEach((item, index) => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'custom-flow-item p-4 rounded-lg flex flex-col items-center text-center w-48 h-full';
+        itemEl.innerHTML = `<i class="${item.icon} text-4xl mb-3 text-[#d2a8ff]"></i><h4 class="font-semibold text-white">${item.name}</h4>`;
+        itemEl.addEventListener('click', () => {
+            workflowExplanation.style.height = workflowExplanation.scrollHeight + 'px';
+            workflowExplanation.style.opacity = '1';
+            workflowExplanation.querySelector('h3').textContent = item.name;
+            workflowExplanation.querySelector('p').innerHTML = item.desc;
+            document.querySelectorAll('.custom-flow-item').forEach(el => el.classList.remove('active'));
+            itemEl.classList.add('active');
+        });
+        workflowDiagram.appendChild(itemEl);
+        if (index < workflowData.length - 1) {
+            const arrowEl = document.createElement('div');
+            arrowEl.className = 'custom-flow-arrow transform md:rotate-0 rotate-90 mx-2 flex items-center justify-center';
+            arrowEl.innerHTML = '<i class="fa-solid fa-arrow-right"></i>';
+            workflowDiagram.appendChild(arrowEl);
+        }
+    });
+    const codeTabs = document.getElementById('code-tabs');
+    const codeContent = document.getElementById('code-content');
+    Object.keys(codeData).forEach((fileName, index) => {
+        const button = document.createElement('button');
+        button.className = `tab-button py-3 px-1 text-base font-medium text-[#8b949e] hover:text-[#d2a8ff] ${index === 0 ? 'active' : ''}`;
+        button.dataset.target = fileName;
+        button.textContent = fileName;
+        codeTabs.appendChild(button);
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.id = fileName;
+        contentDiv.className = `code-block relative ${index === 0 ? '' : 'hidden'}`;
+        contentDiv.innerHTML = `<pre class="bg-[#0d1117] text-white p-4 rounded-lg overflow-x-auto border border-[#30363d]"><button class="copy-btn" onclick="copyCode(this)"><i class="fa-solid fa-copy"></i></button><code class="language-${codeData[fileName].lang}">${codeData[fileName].code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
+        codeContent.appendChild(contentDiv);
+    });
+    const accordion = document.getElementById('troubleshooting-accordion');
+    troubleshootingData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "card overflow-hidden";
+        div.innerHTML = `
+            <button class="accordion-header w-full text-left p-5 font-semibold text-lg flex justify-between items-center text-white hover:bg-[#21262d]">
+                <span>${item.title}</span>
+                <i class="fa-solid fa-chevron-down transform transition-transform duration-300 text-[#a371f7]"></i>
+            </button>
+            <div class="accordion-content px-5">
+                <p class="py-4 text-[#8b949e] border-t border-[#30363d]">${item.solution}</p>
+            </div>`;
+        accordion.appendChild(div);
+    });
+
+    // --- EVENT LISTENERS ---
+    codeTabs.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-button')) {
+            const targetId = e.target.dataset.target;
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            document.querySelectorAll('.code-block').forEach(block => {
+                block.id === targetId ? block.classList.remove('hidden') : block.classList.add('hidden');
+            });
+        }
+    });
+    accordion.addEventListener('click', e => {
+        const header = e.target.closest('.accordion-header');
+        if (header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('i');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                arrow.classList.remove('rotate-180');
+            } else {
+                document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                document.querySelectorAll('.accordion-header i').forEach(a => a.classList.remove('rotate-180'));
+                content.style.maxHeight = content.scrollHeight + "px";
+                arrow.classList.add('rotate-180');
+            }
+        }
+    });
+
+    // --- CHART.JS ---
+    const ctx = document.getElementById('agentChart').getContext('2d');
+    Chart.defaults.color = '#8b949e';
+    new Chart(ctx, {
+        type: 'doughnut', data: {
+            labels: ['Formulate API Request', 'Ask Clarifying Question'],
+            datasets: [{ data: [60, 40], backgroundColor: [ 'rgba(163, 113, 247, 0.7)', 'rgba(210, 168, 255, 0.5)' ], borderColor: [ '#161b22' ], borderWidth: 4, hoverOffset: 8 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '60%', plugins: { legend: { position: 'bottom', labels: { padding: 20, font: { size: 14 } } }, title: { display: true, text: 'Agent\'s Decision Space', font: { size: 18 }, color: '#c9d1d9', padding: { bottom: 20 } } } }
+    });
+
+    // --- INTERSECTION OBSERVER for fade-in and nav highlighting ---
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+    }, { threshold: 0.1 });
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                document.querySelectorAll('#main-nav a').forEach(link => { link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`); });
+                const mobileNav = document.getElementById('mobile-nav');
+                if (mobileNav && mobileNav.value !== entry.target.id) mobileNav.value = entry.target.id;
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    document.querySelectorAll('section[id]').forEach(section => {
+        sectionObserver.observe(section);
+        navObserver.observe(section);
+    });
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileNav) {
+        mobileNav.addEventListener('change', (e) => {
+            const element = document.getElementById(e.target.value);
+            if (element) element.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+});
+
+function copyCode(button) {
+    const pre = button.parentElement;
+    const code = pre.querySelector('code');
+    navigator.clipboard.writeText(code.innerText).then(() => {
+        button.innerHTML = '<i class="fa-solid fa-check"></i>';
+        setTimeout(() => { button.innerHTML = '<i class="fa-solid fa-copy"></i>'; }, 2000);
+    }).catch(err => { console.error('Failed to copy text: ', err); });
+}
+</script>
+</body>
+</html>
